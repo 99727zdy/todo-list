@@ -1,0 +1,63 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+.header{
+  background-color: #545c64;
+  height: 60px;
+}
+.headText{
+  height: 60px;
+  background-color: #434a50;
+  border-left: 5px solid #ffd04b;
+  list-style: none;
+}
+.headText li{
+  display: inline-block;
+  padding: 0 15px;
+}
+.timeShow{
+  color: #eee;
+  text-align: center;
+}
+.title{
+  color: #ffd04b;
+  font-size: 20px;
+  font-weight: 600;
+}
+.listForm{
+  padding-left: 12%;
+  padding-top: 8px;
+}
+
+.main {
+  /* background-color: #99a7b4; */
+  height: calc(100vh - 60px) 
+}
+.listItem{
+  margin: 20px 0;
+}
+.el-tabs__header{
+  width: 100%;
+  background-color: #545c64;
+  position: absolute;
+  bottom: 1px;
+  box-sizing: border-box;
+  padding-left: 30px;
+}
+.el-tabs__nav{
+  height: 60px;
+}
+.el-tabs__item{
+  text-align: center;
+  color: #eee;
+  font-size: 16px;
+  line-height: 60px;
+}
+.el-tabs__content{
+  /* 给内容设置高度 */
+  height: calc(100vh - 120px) ;
+  /* 超过容器高度时，超出部分以滚动条显示 */
+  overflow: scroll;
+}
+

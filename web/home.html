@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  
+  <link rel="stylesheet" href="./css/home.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- 登录 -->
+    <div id="dialog" style="display: block;">
+      <!-- Form -->
+      <el-dialog title="登录或注册" :visible.sync="dialogFormVisible" :close-on-click-modal=false
+        :close-on-press-escape=false :show-close=false :center=true width="60%" @keyup.enter.native="login(loginForm)">
+        <el-form :model="loginForm" :rules="loginRules" ref="loginForm" :inline-message=true>
+          <el-form-item label="用户名" prop="user">
+            <el-input v-model="loginForm.user" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="pwd">
+            <el-input type="password" v-model="loginForm.pwd" autocomplete="off">
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="login(loginForm)">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
+    <div id="main" style="display: none;">
+      <div class="header">
+        <el-row>
+          <el-col :span="4">
+            <div class="grid-content bg-purple-dark">
+              <h3 class="title">{{loginForm.user}}</h3>
+            </div>
+          </el-col>
+          <el-col :span="20">
+            <div class="grid-content bg-purple-dark listForm">
+              <el-form :inline="true" :rules="listRules" ref="formInline" :model="formInline" :inline-message=true
+                class="demo-form-inline">
+                <el-form-item prop="tag">
+                  <el-select v-model="formInline.tag" placeholder="Tag">
+                    <el-option v-for='(tagItem,index) in tagList' :key='index' :label=tagItem.tag :value=tagItem.tag>
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item prop="content">
+                  <el-input v-model="formInline.content" placeholder="List"></el-input>
+                </el-form-item>
+                <el-form-item prop="planTime">
+                  <el-input v-model="formInline.planTime" placeholder="Time"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="onAdd(formInline)" round>add</el-button>
+                </el-form-item>
+                <el-button
+                type="info"
+                icon="el-icon-switch-button"
+                circle
+                class="button"
+                @click="exit"
+              ></el-button>
+              
+              </el-form>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="main">
+        <div style="color: rgba(0, 0, 0, 0);">main</div>
+        <el-tabs value="unfinished" tab-position="bottom" @tab-click="handleClick">
+          <el-tab-pane label="未完成" name="unfinished">
+            <el-row :gutter="20" class="listItem" v-for="(ListItem,index) in userForm" :key='index'>
+              <el-col :span="14" :offset="6">
+                <el-card shadow="hover">
+                  <el-form :inline="true" :model="ListItem" class="demo-form-inline">
+                    <el-form-item required>
+                      <el-select v-model="ListItem.tag" placeholder="Tag">
+                        <el-option v-for='(tagItem,index) in tagList' :key='index' :label=tagItem.tag :value=tagItem.tag>
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-input v-model="ListItem.content" placeholder="List"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-input v-model="ListItem.planTime" placeholder="Time"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-button type="primary" @click="finish(ListItem)" round>OK</el-button>
+                      <el-button type="success" @click="upData(ListItem)" round>UP</el-button>
+                      <el-button type="danger" @click="delList(ListItem)" round>DEL</el-button>
+                    </el-form-item>
+                  </el-form>
+                </el-card>
+              </el-col>
+            </el-row>
+          </el-tab-pane>
+          <el-tab-pane label="已完成" name="finish">
+            <el-row :gutter="20" class="listItem" v-for="(ListItem,index) in userForm" :key='index'>
+              <el-col :span="14" :offset="6">
+                <el-card shadow="hover">
+                  <el-form :inline="true" :model="ListItem" class="demo-form-inline">
+                    <el-form-item required>
+                      <el-select v-model="ListItem.tag" placeholder="Tag">
+                        <el-option v-for='(tagItem,index) in tagList' :key='index' :label=tagItem.tag :value=tagItem.tag>
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-input v-model="ListItem.content" placeholder="List"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-input v-model="ListItem.planTime" placeholder="Time"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-button type="danger" @click="delList(ListItem)" round>del</el-button>
+                    </el-form-item>
+                  </el-form>
+                </el-card>
+              </el-col>
+            </el-row>
+          </el-tab-pane>
+          <el-tab-pane label="一周报告" name="weekly">
+            <div id="week" style="height: 400px; width: 600px;"></div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </div>
+  </div>  
+  <script src="./node_modules/echarts/dist/echarts.min.js"></script>
+  <script src="./lib/vue.js"></script>
+  <script src="./lib/element-ui.js"></script>
+  <script src="./lib/axios.min.js"></script>
+
+  <script src="./js/home.js"></script>
+  <script type="module" src="./js/axios.js"></script>
+
+
+
+
+</body>
+</html>
