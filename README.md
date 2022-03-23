@@ -3,4 +3,4 @@
 
 ## 前后端分离
 ### 前端技术栈：vue
-### 后端技术栈：express，mongdb
+### 后端技术栈：express，mongodb
